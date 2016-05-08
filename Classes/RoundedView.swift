@@ -8,16 +8,21 @@
 
 import UIKit
 
+/// IBDesignable `UIView` subclass with added IBInspectable properties for setting corner radius and fill color. Overrides `drawRect:` to draw the rounded corners in a performant manner.
 @IBDesignable public class RoundedView: UIView {
     
     // MARK: - Properties
     
+    /// The view's corner radius. The radius given to the rounded rect created in `drawRect:`.
+    /// If this is ever set, the view's `backgroundColor` will be updated with `UIColor.clearColor()`.
     @IBInspectable public var cornerRadius: CGFloat = 0.0 {
         didSet {
             configureView()
         }
     }
     
+    /// The view's fill color. The color given to the rounded rect created in `drawRect:`.
+    /// If this is ever set, the view's `backgroundColor` will be updated with `UIColor.clearColor()`.
     @IBInspectable public var fillColor: UIColor? {
         didSet {
             configureView()

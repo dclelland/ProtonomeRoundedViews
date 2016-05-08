@@ -8,26 +8,37 @@
 
 import UIKit
 
+/// IBDesignable `UILabel` subclass with added IBInspectable properties for setting corner radius and fill color. Creates resizable images with cap insets to draw the rounded corners in a performant manner.
 @IBDesignable public class RoundedButton: UIButton {
     
+    /// The button's corner radius. The radius given to the resizable images with which the button calls `setBackgroundImage:forState:`.
+    /// If this is ever set, the button's `backgroundColor` will be updated with `UIColor.clearColor()`.
     @IBInspectable public var cornerRadius: CGFloat = 0.0 {
         didSet {
             configureView()
         }
     }
     
+    /// The view's fill color. The radius given to the resizable image with which the button calls `setBackgroundImage:forState:`.
+    /// If this is ever set, the view's `backgroundColor` will be updated with `UIColor.clearColor()`.
     @IBInspectable public var fillColor: UIColor? {
         didSet {
             configureView()
         }
     }
     
+    /// The view's fill color. The radius given to the resizable image with which the button calls `setBackgroundImage:forState:`.
+    /// If this is set to `nil`, the button falls back upon `fillColor` for the highlighted state.
+    /// If this is ever set, the view's `backgroundColor` will be updated with `UIColor.clearColor()`.
     @IBInspectable public var fillColorHighlighted: UIColor? {
         didSet {
             configureView()
         }
     }
     
+    /// The view's fill color. The radius given to the resizable image with which the button calls `setBackgroundImage:forState:`.
+    /// If this is set to `nil`, the button falls back upon `fillColor` for the selected state.
+    /// If this is ever set, the view's `backgroundColor` will be updated with `UIColor.clearColor()`.
     @IBInspectable public var fillColorSelected: UIColor? {
         didSet {
             configureView()

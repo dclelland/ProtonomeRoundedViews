@@ -8,16 +8,21 @@
 
 import UIKit
 
+/// IBDesignable `UILabel` subclass with added IBInspectable properties for setting corner radius and fill color. Overrides `drawTextInRect:` to draw the rounded corners in a performant manner.
 @IBDesignable public class RoundedLabel: UILabel {
     
     // MARK: - Properties
     
+    /// The label's corner radius. The radius given to the rounded rect created in `drawTextInRect:`.
+    /// If this is ever set, the label's `backgroundColor` will be updated with `UIColor.clearColor()`.
     @IBInspectable public var cornerRadius: CGFloat = 0.0 {
         didSet {
             configureView()
         }
     }
     
+    /// The label's fill color. The color given to the rounded rect created in `drawTextInRect:`.
+    /// If this is ever set, the label's `backgroundColor` will be updated with `UIColor.clearColor()`.
     @IBInspectable public var fillColor: UIColor? {
         didSet {
             configureView()
