@@ -6,12 +6,12 @@
 #
 Pod::Spec.new do |s|
   s.name                    = "ProtonomeRoundedViews"
-  s.version                 = "0.1.0"
+  s.version                 = "0.1.1"
   s.summary                 = "ProtonomeRoundedViews is a collection of IBDesignable-compatible views with rounded corners."
   s.homepage                = "https://github.com/dclelland/Bezzy"
   s.license                 = { :type => 'MIT' }
   s.author                  = { "Daniel Clelland" => "daniel.clelland@gmail.com" }
-  s.source                  = { :git => "https://github.com/dclelland/ProtonomeRoundedViews.git", :tag => "0.1.0" }
+  s.source                  = { :git => "https://github.com/dclelland/ProtonomeRoundedViews.git", :tag => "0.1.1" }
   s.platform                = :ios, '8.0'
   s.ios.deployment_target   = '8.0'
   s.ios.source_files        = 'Classes/**/*.swift'
