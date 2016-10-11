@@ -9,13 +9,13 @@
 import UIKit
 
 /// IBDesignable `UIView` subclass with added IBInspectable properties for setting corner radius and fill color. Overrides `drawRect:` to draw the rounded corners in a performant manner.
-@IBDesignable public class RoundedView: UIView {
+@IBDesignable open class RoundedView: UIView {
     
     // MARK: - Properties
     
     /// The view's corner radius. The radius given to the rounded rect created in `drawRect:`.
     /// If this is ever set, the view's `backgroundColor` will be updated with `UIColor.clearColor()`.
-    @IBInspectable public var cornerRadius: CGFloat = 0.0 {
+    @IBInspectable open var cornerRadius: CGFloat = 0.0 {
         didSet {
             configureView()
         }
@@ -23,7 +23,7 @@ import UIKit
     
     /// The view's fill color. The color given to the rounded rect created in `drawRect:`.
     /// If this is ever set, the view's `backgroundColor` will be updated with `UIColor.clearColor()`.
-    @IBInspectable public var fillColor: UIColor? {
+    @IBInspectable open var fillColor: UIColor? {
         didSet {
             configureView()
         }
@@ -32,16 +32,19 @@ import UIKit
     // MARK: - Configuration
     
     private func configureView() {
-        backgroundColor = UIColor.clearColor()
+        backgroundColor = .clear
         setNeedsDisplay()
     }
     
     // MARK: - Overrides
     
-    override public func drawRect(rect: CGRect) {
-        CGContextSetFillColorWithColor(UIGraphicsGetCurrentContext(), fillColor?.CGColor)
-        backgroundPath.fill()
-        super.drawRect(rect)
+    override open func draw(_ rect: CGRect) {
+        if let context = UIGraphicsGetCurrentContext(), let fillColor = fillColor {
+            context.setFillColor(fillColor.cgColor)
+            backgroundPath.fill()
+        }
+        
+        super.draw(rect)
     }
     
     // MARK: - Private getters

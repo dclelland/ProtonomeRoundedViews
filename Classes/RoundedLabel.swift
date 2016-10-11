@@ -9,13 +9,13 @@
 import UIKit
 
 /// IBDesignable `UILabel` subclass with added IBInspectable properties for setting corner radius and fill color. Overrides `drawTextInRect:` to draw the rounded corners in a performant manner.
-@IBDesignable public class RoundedLabel: UILabel {
+@IBDesignable open class RoundedLabel: UILabel {
     
     // MARK: - Properties
     
     /// The label's corner radius. The radius given to the rounded rect created in `drawTextInRect:`.
     /// If this is ever set, the label's `backgroundColor` will be updated with `UIColor.clearColor()`.
-    @IBInspectable public var cornerRadius: CGFloat = 0.0 {
+    @IBInspectable open var cornerRadius: CGFloat = 0.0 {
         didSet {
             configureView()
         }
@@ -23,35 +23,35 @@ import UIKit
     
     /// The label's fill color. The color given to the rounded rect created in `drawTextInRect:`.
     /// If this is ever set, the label's `backgroundColor` will be updated with `UIColor.clearColor()`.
-    @IBInspectable public var fillColor: UIColor? {
+    @IBInspectable open var fillColor: UIColor? {
         didSet {
             configureView()
         }
     }
     
     /// The label's top text inset.
-    @IBInspectable public var textInsetTop: CGFloat = 0.0 {
+    @IBInspectable open var textInsetTop: CGFloat = 0.0 {
         didSet {
             setNeedsLayout()
         }
     }
     
     /// The label's left text inset.
-    @IBInspectable public var textInsetLeft: CGFloat = 0.0 {
+    @IBInspectable open var textInsetLeft: CGFloat = 0.0 {
         didSet {
             setNeedsLayout()
         }
     }
     
     /// The label's bottom text inset.
-    @IBInspectable public var textInsetBottom: CGFloat = 0.0 {
+    @IBInspectable open var textInsetBottom: CGFloat = 0.0 {
         didSet {
             setNeedsLayout()
         }
     }
     
     /// The label's right text inset.
-    @IBInspectable public var textInsetRight: CGFloat = 0.0 {
+    @IBInspectable open var textInsetRight: CGFloat = 0.0 {
         didSet {
             setNeedsLayout()
         }
@@ -60,21 +60,24 @@ import UIKit
     // MARK: - Configuration
     
     private func configureView() {
-        backgroundColor = UIColor.clearColor()
+        backgroundColor = .clear
         setNeedsDisplay()
     }
     
     // MARK: - Overrides
     
-    override public func textRectForBounds(bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
-        let rect = super.textRectForBounds(textInsets.inset(bounds), limitedToNumberOfLines: numberOfLines)
+    override open func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
+        let rect = super.textRect(forBounds: textInsets.inset(bounds), limitedToNumberOfLines: numberOfLines)
         return textInsets.inverse.inset(rect)
     }
     
-    override public func drawTextInRect(rect: CGRect) {
-        CGContextSetFillColorWithColor(UIGraphicsGetCurrentContext(), fillColor?.CGColor)
-        backgroundPath.fill()
-        super.drawTextInRect(textInsets.inset(rect))
+    override open func drawText(in rect: CGRect) {
+        if let context = UIGraphicsGetCurrentContext(), let fillColor = fillColor {
+            context.setFillColor(fillColor.cgColor)
+            backgroundPath.fill()
+        }
+        
+        super.drawText(in: textInsets.inset(rect))
     }
     
     // MARK: - Private getters
@@ -97,7 +100,7 @@ private extension UIEdgeInsets {
         return UIEdgeInsets(top: -top, left: -left, bottom: -bottom, right: -right)
     }
     
-    func inset(rect: CGRect) -> CGRect {
+    func inset(_ rect: CGRect) -> CGRect {
         return UIEdgeInsetsInsetRect(rect, self)
     }
     

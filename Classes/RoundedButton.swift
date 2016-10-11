@@ -9,11 +9,11 @@
 import UIKit
 
 /// IBDesignable `UILabel` subclass with added IBInspectable properties for setting corner radius and fill color. Creates resizable images with cap insets to draw the rounded corners in a performant manner.
-@IBDesignable public class RoundedButton: UIButton {
+@IBDesignable open class RoundedButton: UIButton {
     
     /// The button's corner radius. The radius given to the resizable images with which the button calls `setBackgroundImage:forState:`.
     /// If this is ever set, the button's `backgroundColor` will be updated with `UIColor.clearColor()`.
-    @IBInspectable public var cornerRadius: CGFloat = 0.0 {
+    @IBInspectable open var cornerRadius: CGFloat = 0.0 {
         didSet {
             configureView()
         }
@@ -21,7 +21,7 @@ import UIKit
     
     /// The view's fill color. The radius given to the resizable image with which the button calls `setBackgroundImage:forState:`.
     /// If this is ever set, the view's `backgroundColor` will be updated with `UIColor.clearColor()`.
-    @IBInspectable public var fillColor: UIColor? {
+    @IBInspectable open var fillColor: UIColor? {
         didSet {
             configureView()
         }
@@ -30,7 +30,7 @@ import UIKit
     /// The view's fill color. The radius given to the resizable image with which the button calls `setBackgroundImage:forState:`.
     /// If this is set to `nil`, the button falls back upon `fillColor` for the highlighted state.
     /// If this is ever set, the view's `backgroundColor` will be updated with `UIColor.clearColor()`.
-    @IBInspectable public var fillColorHighlighted: UIColor? {
+    @IBInspectable open var fillColorHighlighted: UIColor? {
         didSet {
             configureView()
         }
@@ -39,7 +39,7 @@ import UIKit
     /// The view's fill color. The radius given to the resizable image with which the button calls `setBackgroundImage:forState:`.
     /// If this is set to `nil`, the button falls back upon `fillColor` for the selected state.
     /// If this is ever set, the view's `backgroundColor` will be updated with `UIColor.clearColor()`.
-    @IBInspectable public var fillColorSelected: UIColor? {
+    @IBInspectable open var fillColorSelected: UIColor? {
         didSet {
             configureView()
         }
@@ -48,11 +48,11 @@ import UIKit
     // MARK: - Configuration
     
     private func configureView() {
-        backgroundColor = UIColor.clearColor()
-        setBackgroundImage(backgroundImageNormal, forState: .Normal)
-        setBackgroundImage(backgroundImageHighlighted, forState: .Highlighted)
-        setBackgroundImage(backgroundImageHighlighted, forState: [.Highlighted, .Selected])
-        setBackgroundImage(backgroundImageSelected, forState: .Selected)
+        backgroundColor = .clear
+        setBackgroundImage(backgroundImageNormal, for: .normal)
+        setBackgroundImage(backgroundImageHighlighted, for: .highlighted)
+        setBackgroundImage(backgroundImageHighlighted, for: [.highlighted, .selected])
+        setBackgroundImage(backgroundImageSelected, for: .selected)
     }
     
     // MARK: - Private getters
@@ -84,23 +84,23 @@ import UIKit
 
 private extension UIImage {
     
-    private static func resizableImage(withColor color: UIColor, andCornerRadius cornerRadius: CGFloat) -> UIImage {
+    static func resizableImage(withColor color: UIColor, andCornerRadius cornerRadius: CGFloat) -> UIImage {
         let rect = CGRect(x: 0.0, y: 0.0, width: cornerRadius * 2.0 + 1.0, height: cornerRadius * 2.0 + 1.0)
-        let path = CGPathCreateWithRoundedRect(rect, cornerRadius, cornerRadius, nil)
+        let path = CGPath(roundedRect: rect, cornerWidth: cornerRadius, cornerHeight: cornerRadius, transform: nil)
         
-        UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.mainScreen().scale)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
         
         let context = UIGraphicsGetCurrentContext()
         
-        CGContextSetFillColorWithColor(context, color.CGColor)
-        CGContextAddPath(context, path)
-        CGContextFillPath(context)
+        context?.setFillColor(color.cgColor)
+        context?.addPath(path)
+        context?.fillPath()
         
         let image = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext()
         
-        return image.resizableImageWithCapInsets(UIEdgeInsets(top: cornerRadius, left: cornerRadius, bottom: cornerRadius, right: cornerRadius), resizingMode: .Stretch)
+        return image!.resizableImage(withCapInsets: UIEdgeInsets(top: cornerRadius, left: cornerRadius, bottom: cornerRadius, right: cornerRadius), resizingMode: .stretch)
     }
     
 }
