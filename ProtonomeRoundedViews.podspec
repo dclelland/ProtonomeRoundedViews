@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.author                  = { "Daniel Clelland" => "daniel.clelland@gmail.com" }
   s.source                  = { :git => "https://github.com/dclelland/ProtonomeRoundedViews.git", :tag => "1.1.0" }
   s.platform                = :ios, '8.0'
-  spec.swift_version        = '4.2'
+  s.swift_version        = '4.2'
   s.ios.deployment_target   = '8.0'
   s.ios.source_files        = 'Classes/**/*.swift'
   s.requires_arc            = true
